@@ -3,7 +3,12 @@
     "target": "esnext", // 여기에 지정된 버전으로 Typescript가 해당 버전의 JavaScript로 컴파일 된다. esnext는 자바스크립트의 최신버전을 의미한다.
     "module": "esnext", // 사용할 모듈 시스템의 버전을 지정한다.
     "outDir": "dist", // 컴파일된 파일이 각 ts파일의 위치가 아닌 한 곳의 디렉토리로 모이도록 한다. 명칭 입력한 폴더대로 프로젝트의 루트 디렉토리에 생성된다.
-    "strict": true
+    "strict": true,
+    "moduleDetection": "force", // 모듈 감지 방식을 설정한다. force 옵션은 모든 파일을 모듈로 간주한다.
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "esm": true // ts-node를 사용할 때 ESM 모듈 방식을 사용하도록 설정한다.
   },
   "include": ["src"] // 컴파일할 파일의 범위를 지정해준다.
 }
