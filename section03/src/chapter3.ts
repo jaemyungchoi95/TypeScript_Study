@@ -50,6 +50,24 @@ function voidExam(){
         console.log("hi");
     }
 
-
-
+    let voidVar: void = undefined;
 };
+
+/** 
+ * any 타입
+ */
+
+function anyExam(){
+    let unknownVar: unknown;
+    let anyVar: any;
+    let undefinedVar: undefined;
+    let neverVar : never;
+
+    anyVar = unknownVar;
+
+    undefinedVar = anyVar;
+
+    // neverVar = anyVar; // never 타입은 공집합이기 때문에 any 타입을 할당할 수 없다.
+    // any 타입은 치트키 타입이지만 never 타입까지 다운캐스팅할 수는 없다.
+}
+
