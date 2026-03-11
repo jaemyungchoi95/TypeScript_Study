@@ -1,73 +1,84 @@
-/**
- * Unkwown 타입 -> 타입스크립트에 존재하는 모든 타입들의 슈퍼타입이다.
+/*
+ * 기본 타입간의 호환성
  */
 
-function unknownExam(){
-    let a : unknown = 1;
-    let c : unknown = "hello";
-    let b : unknown = true;
-    let d : unknown = null;
-    let e : unknown = undefined;
+let num1: number = 10;
+let num2: 10 = 10; // 10은 10에 할당 가능
 
-    let unknownVar: unknown;
+num1 = num2; // number는 10에 할당 가능 (업캐스팅이라서 할당 가능)
 
-    // 다운캐스팅들은 전부 에러 발생
-    // let num: number = unknownVar; // 에러 발생
-    // let str: string = unknownVar; // 에러 발생
-    // let bool: boolean = unknownVar; // 에러 발생
-    
-}
-
-/**
- * Never 타입 -> 공집합
- * 모든 타입(집합)의 서브타입이다.
+/*
+ * 객체 타입간의 호환성
+ * -> 어떤 객체타입을 다른 객체타입으로 취급해도 괜찮은가?
  */
 
-function neverExam(){
-    function neverFunc(): never {
-        while(true){
-        }
-    }
-
-    let num: number = neverFunc(); // 가능
-    let str: string = neverFunc(); // 가능
-    let bool: boolean = neverFunc(); // 가능
-
-    // never 타입에 다른 타입 변수들을 넣으면 모두 에러 발생 (다운캐스팅이기 때문)
-    // let never1: never = 10;
-    // let never2: never = "hello";
-    // let never3: never = true;
-
-}
-
-/**
- * Void 타입
- * void타입은 타입 계층의 중간에 위치한 평범한? 타입이다.
- */
-
-function voidExam(){
-    function voidFunc(): void {
-        console.log("hi");
-    }
-
-    let voidVar: void = undefined;
+type Animal = {
+    name: string;
+    color: string;
 };
 
-/** 
- * any 타입
+type Dog = {
+    name: string;
+    color: string;
+    breed: string; // 견종
+};
+
+let animal: Animal = {
+    name: '기린',
+    color: 'yellow',
+};
+
+let dog: Dog = {
+    name: '돌돌이',
+    color: 'brown',
+    breed: '진도',
+};
+
+animal = dog; // Animal은 Dog에 할당 가능 (업캐스팅이라서 할당 가능)
+// dog = animal; // Dog는 Animal에 할당 불가능 (다운캐스팅이라서 할당 불가능)
+
+type Book = {
+    name: string;
+    price: number;
+};
+
+type ProgrammingBook = {
+    name: string;
+    price: number;      
+    skill: string; // 기술 스택
+};
+
+let book: Book;
+
+let programmingBook: ProgrammingBook = {
+    name: '한 입 크기로 잘라먹는 리액트',
+    price: 33000,
+    skill: 'reactjs',
+};
+
+book = programmingBook; // Book은 ProgrammingBook에 할당 가능 (업캐스팅이라서 할당 가능)
+// programmingBook = book; // ProgrammingBook은 Book에 할당 불가능 (다운캐스팅이라서 할당 불가능)
+
+/*
+ * 초과 프로퍼티 검사 -> 객체 리터럴이 특정 타입에 할당될 때, 그 타입에 정의되지 않은 프로퍼티가 있으면 오류를 발생시키는 검사
  */
 
-function anyExam(){
-    let unknownVar: unknown;
-    let anyVar: any;
-    let undefinedVar: undefined;
-    let neverVar : never;
+let book2: Book = {
+    name: '한 입 크기로 잘라먹는 리액트',
+    price: 33000,
+    // skill: 'reactjs',
+};
 
-    anyVar = unknownVar;
+let book3: Book = programmingBook; // 객체 리터럴이 아니기 때문에 초과 프로퍼티 검사 대상이 아님 (업캐스팅이라서 할당 가능)
 
-    undefinedVar = anyVar;
+function func(book: Book) {}
 
-    // neverVar = anyVar; // never 타입은 공집합이기 때문에 any 타입을 할당할 수 없다.
-    // any 타입은 치트키 타입이지만 never 타입까지 다운캐스팅할 수는 없다.
-}
+func({
+    name: '한 입 크기로 잘라먹는 리액트',
+    price: 33000,
+    // skill: 'reactjs', // 객체 리터럴이기 때문에 초과 프로퍼티 검사 대상임 (할당 불가능)
+})
+
+func(programmingBook); // 객체 리터럴이 아니기 때문에 초과 프로퍼티 검사 대상이 아님 (업캐스팅이라서 할당 가능)
+// 변수를 만들어서 변수를 통해 전달하면 된다.
 
